@@ -1,50 +1,50 @@
 # Moodgallery
 
-Application web locale pour composer une galerie visuelle avec deplacement automatique horizontal et boucle continue.
+Local web app for building a visual gallery with automatic horizontal movement and continuous looping.
 
-## Apercu
+## Overview
 
-Moodgallery permet de:
+Moodgallery lets you:
 
-- importer plusieurs images par drag-and-drop ou selection de fichiers;
-- afficher les images dans un layout type moodboard;
-- faire defiler automatiquement la galerie avec une vitesse reglable;
-- mettre en pause/reprendre l animation;
-- personnaliser la couleur de fond via sliders HSL ou saisie HEX;
-- reinitialiser la galerie ou les parametres visuels.
+- import multiple images through drag-and-drop or file selection;
+- display images in a moodboard-style layout;
+- automatically scroll the gallery with adjustable speed;
+- pause and resume the animation;
+- customize the background color with HSL sliders or HEX input;
+- reset the gallery or the visual settings.
 
-## Fonctionnalites
+## Features
 
 ### Upload
 
-- zone de drop plein ecran au lancement;
-- prise en charge des fichiers `image/*`;
-- ajout multiple;
-- extraction automatique d une couleur dominante a partir de la premiere image.
+- fullscreen drop zone at startup;
+- support for `image/*` files;
+- multiple file uploads;
+- automatic dominant color extraction from the first image.
 
-### Galerie
+### Gallery
 
-- defilement horizontal automatique;
-- logique de boucle infinie par recyclage dynamique des elements;
-- placeholders et compteurs de chargement;
-- hover visuel sur les images.
+- automatic horizontal scrolling;
+- infinite looping through dynamic element recycling;
+- placeholders and loading counters;
+- visual hover effect on images.
 
-### Controles
+### Controls
 
-- `Pause` (egalement touche `Espace`);
-- `Reinitialiser` (vide la galerie);
-- `Reinit Param` (remet la vitesse et la couleur par defaut);
-- slider de vitesse (`0.1x` a `2.0x`);
-- controles couleur: Hue, Saturation, Lightness, HEX.
+- `Pause` (also on the `Space` key);
+- `Reset` (clears the gallery);
+- `Reset Settings` (restores speed and color defaults);
+- speed slider (`1x` to `4x`);
+- color controls: Hue, Saturation, Lightness, HEX.
 
-## Utilisation
+## Usage
 
-1. Ouvrir `index.html` dans un navigateur moderne.
-2. Deposer des images ou cliquer sur la zone d upload.
-3. Ajuster la vitesse et la couleur avec le panneau de controles.
-4. Utiliser `Pause` pour figer/reprendre l animation.
+1. Open `index.html` in a modern browser.
+2. Drop images or click the upload area.
+3. Adjust speed and color using the control panel.
+4. Use `Pause` to stop and resume the animation.
 
-## Structure du projet
+## Project Structure
 
 ```text
 LCDR-Galery/
@@ -54,20 +54,20 @@ LCDR-Galery/
 `-- README.md
 ```
 
-## Details techniques
+## Technical Details
 
-- Application 100% front-end, sans backend.
-- Lecture locale des images via `FileReader`.
-- Aucun envoi serveur.
-- Animation pilotee par `requestAnimationFrame`.
+- 100% front-end app, no backend.
+- Local image loading through `FileReader`.
+- No server uploads.
+- Animation driven by `requestAnimationFrame`.
 
-## Compatibilite
+## Compatibility
 
-- Chrome / Edge recents
-- Firefox recent
-- Safari recent
+- Recent Chrome / Edge
+- Recent Firefox
+- Recent Safari
 
 ## Notes
 
-- Les images sont conservees en memoire pendant la session.
-- En cas de comportement visuel incoherent apres modifications, faire un rechargement force (`Ctrl+F5`).
+- Images are kept in memory during the session.
+- If the UI looks inconsistent after changes, do a hard refresh (`Ctrl+F5`).

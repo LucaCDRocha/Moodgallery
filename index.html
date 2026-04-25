@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>LCDR Gallery - Moodboard Rotatif</title>
+		<title>LCDR Gallery - Rotating Moodboard</title>
 		<link rel="stylesheet" href="styles.css" />
 	</head>
 	<body>
@@ -15,8 +15,8 @@
 					<polyline points="17 8 12 3 7 8"></polyline>
 					<line x1="12" y1="3" x2="12" y2="15"></line>
 				</svg>
-				<h2>Déposez vos images</h2>
-				<p>ou cliquez pour sélectionner</p>
+				<h2>Drop your images</h2>
+				<p>or click to select</p>
 				<input type="file" id="fileInput" multiple accept="image/*" hidden />
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 		<div class="gallery-wrapper">
 			<div class="gallery-container" id="gallery">
 				<div class="gallery-placeholder">
-					<p>Vos images apparaîtront ici...</p>
+					<p>Your images will appear here...</p>
 				</div>
 			</div>
 		</div>
@@ -33,17 +33,16 @@
 		<!-- Top Bar Controls -->
 		<div class="controls-panel" id="controlsPanel">
 			<div class="control-top">
-				<span id="imageCount" class="image-count">0 img</span>
-			</div>
-			<div class="control-bottom">
-				<div class="fps">FPS: <span id="fps">60</span></div>
-				<div class="image-stats">
-					Chargement: <span id="loadingCount">0</span> | Total: <span id="totalCount">0</span>
+				<div class="image-stats-row">
+					<div class="image-count">Images: <span id="imageCountValue">0</span></div>
+					<div class="fps">FPS: <span id="fps">60</span></div>
 				</div>
 			</div>
 			<div class="speed-control">
-				<label for="speedSlider">Vitesse: <span id="speedValue">1</span>x</label>
-				<input type="range" id="speedSlider" min="1" max="4" step="1" value="1" class="speed-slider" />
+				<div class="speed-control-box">
+					<label for="speedSlider">Speed: <span id="speedValue">1</span>x</label>
+					<input type="range" id="speedSlider" min="1" max="4" step="1" value="1" class="speed-slider" />
+				</div>
 			</div>
 			<div class="color-control">
 				<div class="color-picker-sliders" id="colorPickerSliders">
@@ -99,28 +98,22 @@
 							placeholder="#RRGGBB" />
 					</div>
 				</div>
-				<div class="color-preview-btn" id="colorPreviewBtn"></div>
+				<div class="color-preview-btn" id="colorPreviewBtn" aria-hidden="true"></div>
 			</div>
 			<div class="control-buttons">
-				<label class="pause-toggle" title="Espace pour pause">
+				<label class="pause-toggle" title="Space to toggle playback">
 					<input type="checkbox" id="pauseToggle" />
 					<span>Pause</span>
 				</label>
-				<button id="clearBtn" class="clear-btn" disabled title="Réinitialiser" aria-label="Réinitialiser">
-					Réinitialiser
-				</button>
-				<button
-					id="resetParamsBtn"
-					class="reset-params-btn"
-					title="Réinitialiser les paramètres"
-					aria-label="Réinitialiser les paramètres">
-					Réinit Param
+				<button id="clearBtn" class="clear-btn" disabled title="Reset" aria-label="Reset">Reset</button>
+				<button id="resetParamsBtn" class="reset-params-btn" title="Reset settings" aria-label="Reset settings">
+					Reset Settings
 				</button>
 			</div>
 		</div>
 
 		<!-- Toggle Controls Button -->
-		<button class="controls-toggle" id="controlsToggle" title="Afficher/Masquer les contrôles">
+		<button class="controls-toggle" id="controlsToggle" title="Show or hide controls">
 			<svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 				<polyline points="6 9 12 15 18 9"></polyline>
 			</svg>

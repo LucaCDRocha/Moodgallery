@@ -39,7 +39,7 @@ class DynamicMoodboard {
 		this.uploadBox = document.getElementById("uploadBox");
 		this.fileInput = document.getElementById("fileInput");
 		this.gallery = document.getElementById("gallery");
-		this.imageCount = document.getElementById("imageCount");
+		this.imageCountValue = document.getElementById("imageCountValue");
 		this.pauseToggle = document.getElementById("pauseToggle");
 		this.pauseText = this.pauseToggle.closest("label").querySelector("span");
 		this.clearBtn = document.getElementById("clearBtn");
@@ -62,6 +62,7 @@ class DynamicMoodboard {
 		this.currentHue = 271;
 		this.currentSaturation = 100;
 		this.currentLightness = 50;
+		this.updateAccentColor(this.currentColor);
 
 		// Get gallery container dimensions
 		this.updateDimensions();
@@ -120,6 +121,12 @@ class DynamicMoodboard {
 			},
 			{ passive: true },
 		);
+
+		document.addEventListener("click", (e) => {
+			if (!this.controlsPanel.classList.contains("visible")) return;
+			if (this.controlsPanel.contains(e.target) || this.controlsToggle.contains(e.target)) return;
+			this.closeControls();
+		});
 
 		// Resize handler
 		window.addEventListener(
@@ -298,9 +305,32 @@ class DynamicMoodboard {
 			}, 0);
 		}
 		this.colorPreviewBtn.style.background = rgbColor;
+		this.updateAccentColor(hexColor);
 
 		// Update saturation and lightness slider backgrounds based on hue
 		this.updateSliderBackgrounds();
+	}
+
+	updateAccentColor(color) {
+		if (!color) return;
+		const hex = color.startsWith("#") ? color : `#${color}`;
+		const rgb = this.hexToRgb(hex);
+		if (!rgb) return;
+
+		document.documentElement.style.setProperty("--primary", hex);
+		document.documentElement.style.setProperty("--accent", hex);
+		document.documentElement.style.setProperty("--primary-rgb", rgb);
+		document.documentElement.style.setProperty("--accent-rgb", rgb);
+	}
+
+	hexToRgb(hex) {
+		const normalized = hex.replace("#", "");
+		if (!/^[0-9A-Fa-f]{6}$/.test(normalized)) return null;
+
+		const r = parseInt(normalized.slice(0, 2), 16);
+		const g = parseInt(normalized.slice(2, 4), 16);
+		const b = parseInt(normalized.slice(4, 6), 16);
+		return `${r}, ${g}, ${b}`;
 	}
 
 	hslToHex(h, s, l) {
@@ -480,11 +510,11 @@ class DynamicMoodboard {
 
 	updateImageCount() {
 		const count = this.images.length;
-		this.imageCount.textContent = `${count} img${count > 1 ? "s" : ""}`;
+		this.imageCountValue.textContent = count;
 	}
 
 	clearGallery() {
-		if (confirm("Êtes-vous sûr de vouloir effacer toutes les images ?")) {
+		if (confirm("Are you sure you want to clear all images?")) {
 			this.images = [];
 			this.renderedImages.clear();
 			this.uploadOverlay.classList.remove("hidden");
@@ -498,8 +528,21 @@ class DynamicMoodboard {
 	}
 
 	toggleControls() {
-		this.controlsPanel.classList.toggle("visible");
-		this.controlsToggle.classList.toggle("open");
+		if (this.controlsPanel.classList.contains("visible")) {
+			this.closeControls();
+		} else {
+			this.openControls();
+		}
+	}
+
+	openControls() {
+		this.controlsPanel.classList.add("visible");
+		this.controlsToggle.classList.add("open");
+	}
+
+	closeControls() {
+		this.controlsPanel.classList.remove("visible");
+		this.controlsToggle.classList.remove("open");
 	}
 
 	resetParameters() {
@@ -584,10 +627,11 @@ class DynamicMoodboard {
 	}
 
 	updateTotalCount() {
-		const loadingCount = this.images.filter((img) => !img.loaded).length;
 		const totalCount = this.images.length;
-		document.getElementById("loadingCount").textContent = loadingCount;
-		document.getElementById("totalCount").textContent = totalCount;
+		const totalCountElement = document.getElementById("totalCount");
+		if (totalCountElement) {
+			totalCountElement.textContent = totalCount;
+		}
 	}
 
 	getCardSizeClass(imageObj, variantIndex) {
