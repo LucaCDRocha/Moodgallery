@@ -1,10 +1,10 @@
-# LCDR Gallery
+# Moodgallery
 
 Application web locale pour composer une galerie visuelle avec deplacement automatique horizontal et boucle continue.
 
 ## Apercu
 
-LCDR Gallery permet de:
+Moodgallery permet de:
 
 - importer plusieurs images par drag-and-drop ou selection de fichiers;
 - afficher les images dans un layout type moodboard;
