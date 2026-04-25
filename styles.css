@@ -137,7 +137,8 @@ body {
 	display: none;
 }
 
-.gallery-container img {
+.gallery-container img,
+.gallery-container video {
 	position: relative;
 	will-change: transform;
 	object-fit: cover;

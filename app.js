@@ -16,6 +16,7 @@ class DynamicMoodboard {
 		this.speedMultiplier = 1; // Speed control multiplier (default from slider)
 		this.speedScale = 0.25; // Keep 1x as the slowest visible setting
 		this.isSettingColor = false; // Flag to prevent recursive input events
+		this.hasExtractedDominantColor = false;
 
 		this.initElements();
 		// Initialize speedMultiplier from slider value
@@ -442,13 +443,15 @@ class DynamicMoodboard {
 
 	processFiles(files) {
 		// Batch process files for better performance
-		const filesToProcess = Array.from(files).filter((file) => file.type.startsWith("image/"));
+		const filesToProcess = Array.from(files).filter(
+			(file) => file.type.startsWith("image/") || file.type.startsWith("video/"),
+		);
 		this.loadingImages += filesToProcess.length;
 
 		filesToProcess.forEach((file) => {
 			const reader = new FileReader();
 			reader.onload = (e) => {
-				this.addImage(e.target.result);
+				this.addMedia(e.target.result, file.type);
 			};
 			reader.readAsDataURL(file);
 		});
@@ -456,32 +459,59 @@ class DynamicMoodboard {
 		this.fileInput.value = "";
 	}
 
-	addImage(src) {
-		const imageObj = {
+	addMedia(src, mimeType) {
+		const mediaObj = {
 			src: src,
+			mimeType,
+			mediaType: mimeType.startsWith("video/") ? "video" : "image",
 			loaded: false,
 		};
+
+		if (mediaObj.mediaType === "video") {
+			const video = document.createElement("video");
+			video.preload = "metadata";
+			video.onloadedmetadata = () => {
+				mediaObj.loaded = true;
+				mediaObj.naturalWidth = video.videoWidth || 1;
+				mediaObj.naturalHeight = video.videoHeight || 1;
+				mediaObj.aspectRatio = mediaObj.naturalWidth / mediaObj.naturalHeight;
+
+				this.images.push(mediaObj);
+				this.loadingImages--;
+				this.updateImageCount();
+				this.hideUploadOverlay();
+				this.clearBtn.disabled = false;
+				this.debouncedRender();
+			};
+			video.onerror = () => {
+				console.error("Failed to load video:", src);
+				this.loadingImages--;
+			};
+			video.src = src;
+			return;
+		}
 
 		const img = new Image();
 		img.crossOrigin = "anonymous";
 		img.onload = () => {
-			imageObj.loaded = true;
-			imageObj.naturalWidth = img.naturalWidth;
-			imageObj.naturalHeight = img.naturalHeight;
-			imageObj.aspectRatio = imageObj.naturalWidth / imageObj.naturalHeight;
+			mediaObj.loaded = true;
+			mediaObj.naturalWidth = img.naturalWidth;
+			mediaObj.naturalHeight = img.naturalHeight;
+			mediaObj.aspectRatio = mediaObj.naturalWidth / mediaObj.naturalHeight;
 
-			this.images.push(imageObj);
+			this.images.push(mediaObj);
 			this.loadingImages--;
 			this.updateImageCount();
 
-			// Extract dominant color from first image
-			if (this.images.length === 1) {
+			// Extract dominant color from the first loaded image only.
+			if (!this.hasExtractedDominantColor) {
 				this.extractDominantColor(img);
+				this.hasExtractedDominantColor = true;
 			}
 			this.hideUploadOverlay();
 			this.clearBtn.disabled = false;
 
-			// Debounce render to wait for batch of images
+			// Debounce render to wait for batch of media
 			this.debouncedRender();
 		};
 		img.onerror = () => {
@@ -514,8 +544,9 @@ class DynamicMoodboard {
 	}
 
 	clearGallery() {
-		if (confirm("Are you sure you want to clear all images?")) {
+		if (confirm("Are you sure you want to clear all media?")) {
 			this.images = [];
+			this.hasExtractedDominantColor = false;
 			this.renderedImages.clear();
 			this.uploadOverlay.classList.remove("hidden");
 			this.updateImageCount();
@@ -658,12 +689,22 @@ class DynamicMoodboard {
 			card.className = "gallery-card";
 			card.classList.add(this.getCardSizeClass(imageObj, i + columnIndex));
 
-			const img = document.createElement("img");
-			img.src = imageObj.src;
-			img.alt = "Gallery image";
-			img.style.pointerEvents = "auto";
-
-			card.appendChild(img);
+			if (imageObj.mediaType === "video") {
+				const video = document.createElement("video");
+				video.src = imageObj.src;
+				video.muted = true;
+				video.loop = true;
+				video.autoplay = true;
+				video.playsInline = true;
+				video.preload = "metadata";
+				video.setAttribute("aria-label", "Gallery video");
+				card.appendChild(video);
+			} else {
+				const img = document.createElement("img");
+				img.src = imageObj.src;
+				img.alt = "Gallery image";
+				card.appendChild(img);
+			}
 			column.appendChild(card);
 			index++;
 		}
