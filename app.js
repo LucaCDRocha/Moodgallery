@@ -13,12 +13,13 @@ class DynamicMoodboard {
 		this.renderTimeout = null; // Debounce render calls
 		this.loadingImages = 0; // Track pending image loads
 		this.scrollSpeed = this.getResponsiveScrollSpeed(); // Responsive scroll speed
-		this.speedMultiplier = 0.5; // Speed control multiplier (default from slider)
+		this.speedMultiplier = 1; // Speed control multiplier (default from slider)
+		this.speedScale = 0.25; // Keep 1x as the slowest visible setting
 		this.isSettingColor = false; // Flag to prevent recursive input events
 
 		this.initElements();
 		// Initialize speedMultiplier from slider value
-		this.speedMultiplier = parseFloat(this.speedSlider.value);
+		this.speedMultiplier = parseInt(this.speedSlider.value, 10) * this.speedScale;
 		this.attachEventListeners();
 		this.render();
 		this.startAnimation();
@@ -134,8 +135,9 @@ class DynamicMoodboard {
 		this.speedSlider.addEventListener(
 			"input",
 			(e) => {
-				this.speedMultiplier = parseFloat(e.target.value);
-				this.speedValue.textContent = this.speedMultiplier.toFixed(1);
+				const speedValue = parseInt(e.target.value, 10);
+				this.speedMultiplier = speedValue * this.speedScale;
+				this.speedValue.textContent = speedValue.toString();
 			},
 			{ passive: true },
 		);
@@ -501,9 +503,9 @@ class DynamicMoodboard {
 	}
 
 	resetParameters() {
-		this.speedSlider.value = 0.5;
-		this.speedMultiplier = 0.5;
-		this.speedValue.textContent = "0.5";
+		this.speedSlider.value = 1;
+		this.speedMultiplier = 1 * this.speedScale;
+		this.speedValue.textContent = "1";
 
 		// Reset color to the auto-extracted color
 		this.setColor(this.autoExtractedColor);
