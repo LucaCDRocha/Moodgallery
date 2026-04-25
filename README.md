@@ -48,7 +48,7 @@ Moodgallery lets you:
 ## Project Structure
 
 ```text
-LCDR-Galery/
+Moodgallery/
 |-- index.html
 |-- styles.css
 |-- app.js

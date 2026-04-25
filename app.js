@@ -1,5 +1,5 @@
 // ============================================
-// LCDR Gallery - Dynamic Moodboard
+// Moodgallery - Dynamic Rotating Moodboard
 // ============================================
 
 class DynamicMoodboard {
