@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>LCDR Gallery - Moodboard Rotatif</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<!-- Upload Overlay -->
+		<div class="upload-overlay" id="uploadOverlay">
+			<div class="upload-box" id="uploadBox">
+				<svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+					<polyline points="17 8 12 3 7 8"></polyline>
+					<line x1="12" y1="3" x2="12" y2="15"></line>
+				</svg>
+				<h2>Déposez vos images</h2>
+				<p>ou cliquez pour sélectionner</p>
+				<input type="file" id="fileInput" multiple accept="image/*" hidden />
+			</div>
+		</div>
+
+		<!-- Gallery -->
+		<div class="gallery-wrapper">
+			<div class="gallery-container" id="gallery">
+				<div class="gallery-placeholder">
+					<p>Vos images apparaîtront ici...</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Top Bar Controls -->
+		<div class="controls-panel" id="controlsPanel">
+			<div class="control-top">
+				<span id="imageCount" class="image-count">0 img</span>
+			</div>
+			<div class="control-bottom">
+				<div class="fps">FPS: <span id="fps">60</span></div>
+				<div class="image-stats">
+					Chargement: <span id="loadingCount">0</span> | Total: <span id="totalCount">0</span>
+				</div>
+			</div>
+			<div class="speed-control">
+				<label for="speedSlider">Vitesse: <span id="speedValue">0.5</span>x</label>
+				<input type="range" id="speedSlider" min="0.1" max="2" step="0.1" value="0.5" class="speed-slider" />
+			</div>
+			<div class="color-control">
+				<div class="color-picker-sliders" id="colorPickerSliders">
+					<div class="hsl-slider-group">
+						<div class="hsl-slider-item">
+							<label for="hueSlider">Hue:</label>
+							<div class="slider-container">
+								<input
+									type="range"
+									id="hueSlider"
+									class="hsl-slider hue-slider"
+									min="0"
+									max="360"
+									value="271" />
+								<span class="slider-value" id="hueValue">271</span>
+							</div>
+						</div>
+						<div class="hsl-slider-item">
+							<label for="saturationSlider">Saturation:</label>
+							<div class="slider-container">
+								<input
+									type="range"
+									id="saturationSlider"
+									class="hsl-slider sat-slider"
+									min="0"
+									max="100"
+									value="100" />
+								<span class="slider-value" id="saturationValue">100</span>
+							</div>
+						</div>
+						<div class="hsl-slider-item">
+							<label for="lightnessSlider">Lightness:</label>
+							<div class="slider-container">
+								<input
+									type="range"
+									id="lightnessSlider"
+									class="hsl-slider light-slider"
+									min="0"
+									max="100"
+									value="50" />
+								<span class="slider-value" id="lightnessValue">50</span>
+							</div>
+						</div>
+					</div>
+					<div class="hex-input-wrapper">
+						<label for="colorValue">Hex:</label>
+						<input
+							type="text"
+							id="colorValue"
+							class="hex-input"
+							value="#667EEA"
+							maxlength="7"
+							placeholder="#RRGGBB" />
+					</div>
+				</div>
+				<div class="color-preview-btn" id="colorPreviewBtn"></div>
+			</div>
+			<div class="control-buttons">
+				<label class="pause-toggle" title="Espace pour pause">
+					<input type="checkbox" id="pauseToggle" />
+					<span>Pause</span>
+				</label>
+				<button id="clearBtn" class="clear-btn" disabled title="Réinitialiser" aria-label="Réinitialiser">
+					Réinitialiser
+				</button>
+				<button
+					id="resetParamsBtn"
+					class="reset-params-btn"
+					title="Réinitialiser les paramètres"
+					aria-label="Réinitialiser les paramètres">
+					Réinit Param
+				</button>
+			</div>
+		</div>
+
+		<!-- Toggle Controls Button -->
+		<button class="controls-toggle" id="controlsToggle" title="Afficher/Masquer les contrôles">
+			<svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<polyline points="6 9 12 15 18 9"></polyline>
+			</svg>
+		</button>
+
+		<script src="app.js"></script>
+	</body>
+</html>
